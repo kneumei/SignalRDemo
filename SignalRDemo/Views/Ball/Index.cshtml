@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using System.Web.Optimization
+
+
+@Scripts.Render("~/Scripts/jquery")
+@Scripts.Render("~/Scripts/kinetic")
+@Scripts.Render("~/Scripts/signalR")
+
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/shapes.js"></script>
+
+<h2>Interactive Demo</h2>
+
+<div id="ball-demo-container" style="border: 5px solid black; width: 600px; height: 600px; margin: auto"></div>

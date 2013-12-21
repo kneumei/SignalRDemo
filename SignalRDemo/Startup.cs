@@ -5,6 +5,7 @@ using Owin;
 using Microsoft.AspNet.SignalR;
 using SignalRDemo.Hubs;
 using System.Collections.Generic;
+using Microsoft.Owin.Cors;
 
 [assembly: OwinStartup(typeof(SignalRDemo.Startup))]
 
@@ -29,7 +30,16 @@ namespace SignalRDemo
                 typeof(DemoHub),
                 () => new DemoHub(shapeConfigService));
 
-            app.MapSignalR();
+            app.Map("/signalr", map =>
+            {
+              
+                map.UseCors(CorsOptions.AllowAll);
+                var hubConfiguration = new HubConfiguration
+                {
+                     EnableJSONP = true
+                };
+                map.RunSignalR(hubConfiguration);
+            });
         }
     }
 }
