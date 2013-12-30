@@ -1,0 +1,24 @@
+﻿@using System.Web.Optimization
+
+@Scripts.Render("~/Scripts/jquery")
+@Scripts.Render("~/Scripts/signalR")
+
+<script src="~/signalr/hubs"></script>
+<script src="~/Scripts/chathub.js"></script>
+
+<h2>Chat Hub</h2>
+
+<div id="alerts"></div>
+
+@using (Html.BeginForm())
+{
+    @Html.EditorForModel();
+
+    <input id="send" value="send" type="button" />
+    <ul id="messages" style="list-style:none;"></ul>
+}
+
+
+
+
+

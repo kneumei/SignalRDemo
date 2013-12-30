@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR;
 using SignalRDemo.Hubs;
 using System.Collections.Generic;
 using Microsoft.Owin.Cors;
+using SignalRDemo.Connections;
 
 [assembly: OwinStartup(typeof(SignalRDemo.Startup))]
 
@@ -40,6 +41,8 @@ namespace SignalRDemo
                 };
                 map.RunSignalR(hubConfiguration);
             });
+
+            app.MapSignalR<ChatConnection>("/signalrchat");
         }
     }
 }

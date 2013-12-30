@@ -120,13 +120,15 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\chatconnection.js" />
+    <Content Include="Scripts\chathub.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\jquery.signalR-2.0.1.js" />
     <Content Include="Scripts\jquery.signalR-2.0.1.min.js" />
     <Content Include="Scripts\kinetic-v4.4.3.js" />
     <Content Include="Scripts\kinetic-v4.4.3.min.js" />
-    <Content Include="Scripts\shapes.js" />
+    <Content Include="Scripts\ball.js" />
     <Content Include="Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -135,12 +137,17 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Connections\ChatConnection.cs" />
     <Compile Include="Controllers\BallController.cs" />
+    <Compile Include="Controllers\ChatConnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HubChatController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Hubs\DemoHub.cs" />
+    <Compile Include="Models\Chat\ChatModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -149,6 +156,8 @@
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
     <Content Include="Views\Ball\Index.cshtml" />
+    <Content Include="Views\ChatConn\Index.cshtml" />
+    <Content Include="Views\HubChat\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -158,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -11,6 +11,8 @@
     var layer = new Kinetic.Layer();
     stage.add(layer);
 
+    $.connection.hub.logging = true;
+
     var demoHub = $.connection.demoHub;
 
     demoHub.client.moveIt = function (index, x, y) {
@@ -24,7 +26,6 @@
             var circle = new Kinetic.Circle(shapeConfigList[i]);
 
             circle.on("dragstart", function () {
-                console.log("start")
                 currentDraggedShape = this;
                 $("#ball-demo-container").on("mousemove", function () {
                     demoHub.server.sendMove(currentDraggedShape.index, currentDraggedShape.attrs.x, currentDraggedShape.attrs.y);
@@ -59,6 +60,7 @@
 
     $.connection.hub.url = signalRDemoUrl
     $.connection.hub.start().done(function () {
+        console.log("start");
         demoHub.server.getShapes();
     });
     
