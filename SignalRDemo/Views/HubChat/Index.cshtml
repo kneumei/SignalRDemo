@@ -6,8 +6,6 @@
 
 <h2>Chatting with Hubs</h2>
 
-<div id="alerts"></div>
-
 <form>
     <label for="Name">Name</label>
     <br />
@@ -24,28 +22,14 @@
 
 <script>
     $(function () {
-        var chatHub = $.connection.chatHub;
 
-        $("#alerts").hide();
+        //need reference to chat hub
 
-        chatHub.client.broadcastMessage = function (name, message) {
-            $("#messages").append("<li>" + name + ": " + message + "</li>");
-        }
+        //need broadcastMessageHandler
 
-        chatHub.client.userJoined = function () {
-            $("#alerts").text("A new user joined the chat room!").slideDown("slow").delay(1500).slideUp("slow");
-        }
+        //need connection start
 
-        chatHub.client.userLeft = function (name) {
-            $("#alerts").text(name + " left the chat room!").slideDown("slow").delay(1500).slideUp("slow");
-        }
-
-        $.connection.hub.start().done(function () {
-            $("#alerts").text("Welcome to the chat room!").slideDown("slow").delay(1500).slideUp("slow");
-            $("#send").click(function () {
-                chatHub.server.send($("#Name").val(), $("#Message").val())
-            });
-        });
+        //need listener to send button
     });
 </script>
 
