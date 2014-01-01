@@ -1,16 +1,98 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
-@using System.Web.Optimization
-
-
-@Scripts.Render("~/Scripts/jquery")
-@Scripts.Render("~/Scripts/kinetic")
-@Scripts.Render("~/Scripts/signalR")
-
+﻿<script src="~/Scripts/jquery-2.0.3.js"></script>
+<script src="~/Scripts/kinetic-v4.4.3.js"></script>
+<script src="~/Scripts/jquery.signalR-2.0.1.js"></script>
 <script src="~/signalr/hubs"></script>
-<script src="~/Scripts/ball.js"></script>
 
 <h2>Interactive Demo</h2>
 
 <div id="ball-demo-container" style="border: 5px solid black; width: 600px; height: 600px; margin: auto"></div>
+
+<script>
+
+    $(function () {
+        var shapes = [];
+        var currentDraggedShape = null;
+
+        //KinectJs Stuff
+
+        var stage = new Kinetic.Stage({
+            container: 'ball-demo-container',
+            width: 600,
+            height: 600
+        });
+
+        var layer = new Kinetic.Layer();
+        stage.add(layer);
+
+        //SignalR Stuff
+
+        var ballHub = $.connection.ballHub;
+
+        //called when a single ball moves
+        ballHub.client.moveIt = function (index, x, y) {
+            shapes[index].setPosition(x, y);
+            layer.draw();
+        }
+
+        //called when server returns with current ball data
+        ballHub.client.setShapes = function (shapeConfigList) {
+            for (var i = 0; i < shapeConfigList.length; i++) {
+                shapeConfigList[i].Index = i;
+
+                //create circle object
+                var circle = new Kinetic.Circle(shapeConfigList[i]);
+
+                //add drag-start listener
+                addDragListeners(circle);
+
+                addTouchListener(circle);
+
+                //add shapes to data structures
+                shapes.push(circle);
+                layer.add(circle);
+            }
+            //draw the shapes
+            layer.draw();
+
+            //fix for chrome
+            $("#ball-demo-container canvas:last").css("position", "relative");
+        }
+
+        $.connection.hub.start().done(function () {
+            ballHub.server.getShapes();
+        });
+
+        function addDragListeners(circle){
+            circle.on("dragstart", function () {
+                currentDraggedShape = this;
+
+                $("#ball-demo-container").on("mousemove", function () {
+                    ballHub.server.sendMove(currentDraggedShape.index, currentDraggedShape.attrs.x, currentDraggedShape.attrs.y);
+                });
+
+            });
+
+            circle.on("dragend", function () {
+                currentDraggedShape = null
+                $("#ball-demo-container").off('mousemove');
+            })
+        }
+
+        function addTouchListener(circle) {
+            circle.on("touchstart", function () {
+                currentDraggedShape = this;
+                $("#ball-demo-container").on("touchmove", function () {
+                    ballHub.server.sendMove(currentDraggedShape.index, currentDraggedShape.attrs.x, currentDraggedShape.attrs.y);
+                });
+
+            });
+
+            circle.on("touchend", function () {
+                currentDraggedShape = null
+                $("#ball-demo-container").off('touchmove');
+            })
+        }
+
+    });
+
+</script>

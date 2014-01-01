@@ -1,22 +1,54 @@
 ﻿@using System.Web.Optimization
 
-@Scripts.Render("~/Scripts/jquery")
-@Scripts.Render("~/Scripts/signalR")
-
+<script src="~/Scripts/jquery-2.0.3.js"></script>
+<script src="~/Scripts/jquery.signalR-2.0.1.js"></script>
 <script src="~/signalr/hubs"></script>
-<script src="~/Scripts/chathub.js"></script>
 
-<h2>Chat Hub</h2>
+<h2>Chatting with Hubs</h2>
 
 <div id="alerts"></div>
 
-@using (Html.BeginForm())
-{
-    @Html.EditorForModel();
-
+<form>
+    <label for="Name">Name</label>
+    <br />
+    <input type="text" id="Name" name="Name" />
+    <br />
+    <label for="Message">Message</label>
+    <br />
+    <input type="text" id="Message" name="Message" />
+    <br />
     <input id="send" value="send" type="button" />
-    <ul id="messages" style="list-style:none;"></ul>
-}
+</form>
+
+<ul id="messages" style="list-style:none;"></ul>
+
+<script>
+    $(function () {
+        var chatHub = $.connection.chatHub;
+
+        $("#alerts").hide();
+
+        chatHub.client.broadcastMessage = function (name, message) {
+            $("#messages").append("<li>" + name + ": " + message + "</li>");
+        }
+
+        chatHub.client.userJoined = function () {
+            $("#alerts").text("A new user joined the chat room!").slideDown("slow").delay(1500).slideUp("slow");
+        }
+
+        chatHub.client.userLeft = function (name) {
+            $("#alerts").text(name + " left the chat room!").slideDown("slow").delay(1500).slideUp("slow");
+        }
+
+        $.connection.hub.start().done(function () {
+            $("#alerts").text("Welcome to the chat room!").slideDown("slow").delay(1500).slideUp("slow");
+            $("#send").click(function () {
+                chatHub.server.send($("#Name").val(), $("#Message").val())
+            });
+        });
+    });
+</script>
+
 
 
 

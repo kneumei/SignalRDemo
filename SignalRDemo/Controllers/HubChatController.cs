@@ -12,7 +12,7 @@ namespace SignalRDemo.Controllers
         // GET: /HubChat/
         public ActionResult Index()
         {
-            return View(new SignalRDemo.Models.Chat.ChatModel());
+            return View();
         }
 	}
 }

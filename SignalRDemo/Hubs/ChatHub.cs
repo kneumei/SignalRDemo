@@ -12,7 +12,7 @@ namespace SignalRDemo.Hubs
         public override Task OnConnected()
         {
             ChatHubUsers.users[Context.ConnectionId] = String.Empty;
-            Clients.All.userJoined();
+            Clients.Others.userJoined();
             return base.OnConnected();
         }
 
@@ -24,7 +24,7 @@ namespace SignalRDemo.Hubs
 
         public override Task OnDisconnected()
         {
-            Clients.All.userLeft(ChatHubUsers.users[Context.ConnectionId]);
+            Clients.Others.userLeft(ChatHubUsers.users[Context.ConnectionId]);
             ChatHubUsers.users.Remove(Context.ConnectionId);
             return base.OnDisconnected();
         }
