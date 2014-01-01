@@ -9,29 +9,27 @@ namespace SignalRDemo.Hubs
 {
     public class ChatHub : Hub
     {
+        private static Dictionary<string, string> _users = new Dictionary<string, string>();
+
         public override Task OnConnected()
         {
-            ChatHubUsers.users[Context.ConnectionId] = String.Empty;
+            _users[Context.ConnectionId] = String.Empty;
             Clients.Others.userJoined();
             return base.OnConnected();
         }
 
         public void Send(string name, string message)
         {
-            ChatHubUsers.users[Context.ConnectionId] = name;
+            _users[Context.ConnectionId] = name;
             Clients.All.broadcastMessage(name, message);
         }
 
         public override Task OnDisconnected()
         {
-            Clients.Others.userLeft(ChatHubUsers.users[Context.ConnectionId]);
-            ChatHubUsers.users.Remove(Context.ConnectionId);
+            Clients.Others.userLeft(_users[Context.ConnectionId]);
+            _users.Remove(Context.ConnectionId);
             return base.OnDisconnected();
         }
     }
 
-    public class ChatHubUsers
-    {
-        public static Dictionary<string, string> users = new Dictionary<string, string>();
-    }
 }
