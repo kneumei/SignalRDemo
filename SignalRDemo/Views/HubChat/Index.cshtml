@@ -1,20 +1,14 @@
-﻿@using System.Web.Optimization
-
-<script src="~/Scripts/jquery-2.0.3.js"></script>
+﻿<script src="~/Scripts/jquery-2.0.3.js"></script>
 <script src="~/Scripts/jquery.signalR-2.0.1.js"></script>
 <script src="~/signalr/hubs"></script>
 
 <h2>Chatting with Hubs</h2>
 
 <form>
-    <label for="Name">Name</label>
-    <br />
-    <input type="text" id="Name" name="Name" />
-    <br />
-    <label for="Message">Message</label>
-    <br />
-    <input type="text" id="Message" name="Message" />
-    <br />
+    <label for="Name">Name</label><br />
+    <input id="Name" name="Name" type="text" /><br />
+    <label for="Message">Message</label><br />
+    <input id="Message" name="Message" type="text" /><br />
     <input id="send" value="send" type="button" />
 </form>
 
